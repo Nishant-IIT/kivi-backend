@@ -1,3 +1,6 @@
+# Kiro specs (local only)
+.kiro/
+
 # Environment variables
 .env
 
