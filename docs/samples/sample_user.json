@@ -1,0 +1,136 @@
+{
+    "user_id": "usr_9876543210",
+    "phone": "+919876543210",
+    "name": "Rahul Sharma",
+    "email": "rahul.sharma@example.com",
+    "job": "Delivery Partner",
+    "city": "Mumbai",
+    "gig_platforms": [
+        "Swiggy",
+        "Zomato",
+        "Dunzo"
+    ],
+    "financial_summary": {
+        "current_balance": 12000.00,
+        "avg_monthly_income": 28000.00,
+        "monthly_expenses": 22000.00,
+        "income_volatility": "high",
+        "last_30_days_income": 31500.00,
+        "income_sources": {
+            "Swiggy": 18000.00,
+            "Zomato": 10500.00,
+            "Dunzo": 3000.00
+        },
+        "expense_breakdown": {
+            "food": 5200.00,
+            "transport": 4800.00,
+            "fuel": 3500.00,
+            "bike_maintenance": 1500.00,
+            "bills": 3000.00,
+            "shopping": 2000.00,
+            "entertainment": 1000.00,
+            "healthcare": 500.00,
+            "others": 500.00
+        }
+    },
+    "budgets": [
+        {
+            "category": "food",
+            "monthly_limit": 5000.00,
+            "current_spent": 3200.00,
+            "note": "Personal food expenses"
+        },
+        {
+            "category": "transport",
+            "monthly_limit": 3000.00,
+            "current_spent": 2800.00,
+            "note": "Bike fuel and maintenance for deliveries"
+        },
+        {
+            "category": "fuel",
+            "monthly_limit": 4000.00,
+            "current_spent": 2500.00,
+            "note": "Petrol for delivery bike"
+        },
+        {
+            "category": "entertainment",
+            "monthly_limit": 2000.00,
+            "current_spent": 800.00,
+            "note": "Movies, outings, subscriptions"
+        }
+    ],
+    "goals": [
+        {
+            "goal_id": "goal_001",
+            "name": "Emergency Fund",
+            "description": "Build emergency fund to cover 3 months of expenses",
+            "target_amount": 30000.00,
+            "current_amount": 12000.00,
+            "deadline": "2025-06-30",
+            "priority": "high",
+            "monthly_contribution": 3000.00
+        },
+        {
+            "goal_id": "goal_002",
+            "name": "Bike EMI Buffer",
+            "description": "Save buffer for bike EMI payments during low-income months",
+            "target_amount": 15000.00,
+            "current_amount": 5000.00,
+            "deadline": "2025-03-31",
+            "priority": "medium",
+            "monthly_contribution": 2500.00
+        },
+        {
+            "goal_id": "goal_003",
+            "name": "New Phone",
+            "description": "Save for new smartphone for better delivery app performance",
+            "target_amount": 20000.00,
+            "current_amount": 3000.00,
+            "deadline": "2025-08-31",
+            "priority": "low",
+            "monthly_contribution": 1500.00
+        }
+    ],
+    "notification_preferences": {
+        "whatsapp_enabled": true,
+        "budget_alerts": true,
+        "weekly_summary": true,
+        "monthly_summary": true,
+        "income_tracking": true,
+        "low_balance_threshold": 5000.00,
+        "daily_earnings_summary": true,
+        "platform_comparison_alerts": true
+    },
+    "work_schedule": {
+        "preferred_hours": [
+            "12:00-14:00",
+            "19:00-22:00"
+        ],
+        "preferred_days": [
+            "Friday",
+            "Saturday",
+            "Sunday"
+        ],
+        "avg_hours_per_day": 8,
+        "avg_orders_per_day": 15
+    },
+    "bike_details": {
+        "model": "Honda Activa",
+        "registration": "MH02XX1234",
+        "purchase_date": "2023-06-15",
+        "emi_amount": 3500.00,
+        "emi_due_date": 5,
+        "insurance_expiry": "2025-06-14",
+        "last_service_date": "2024-12-10",
+        "avg_fuel_consumption_per_day": 2.5
+    },
+    "created_at": "2025-01-15T10:30:00Z",
+    "updated_at": "2025-01-20T14:22:00Z",
+    "metadata": {
+        "onboarding_completed": true,
+        "aa_data_fetched": true,
+        "aa_last_sync": "2025-01-20T10:00:00Z",
+        "preferred_language": "en",
+        "timezone": "Asia/Kolkata"
+    }
+}

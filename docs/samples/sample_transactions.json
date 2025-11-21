@@ -1,0 +1,346 @@
+[
+    {
+        "transaction_id": "txn_20250120_001",
+        "user_id": "usr_9876543210",
+        "amount": 1200.00,
+        "vendor": "Swiggy Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-20T23:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Swiggy",
+            "orders_completed": 15,
+            "peak_hours_orders": 8,
+            "avg_per_order": 80.00,
+            "tips_received": 150.00,
+            "distance_covered_km": 45
+        }
+    },
+    {
+        "transaction_id": "txn_20250120_002",
+        "user_id": "usr_9876543210",
+        "amount": 450.00,
+        "vendor": "Swiggy",
+        "category": "food",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-20T19:30:00Z",
+        "source": "sms",
+        "raw_sms_text": "Rs 450 debited from A/c XX1234 on 20-Jan-25 to Swiggy",
+        "metadata": {
+            "payment_method": "UPI",
+            "location": "Mumbai"
+        }
+    },
+    {
+        "transaction_id": "txn_20250120_003",
+        "user_id": "usr_9876543210",
+        "amount": 350.00,
+        "vendor": "Shell Petrol Pump",
+        "category": "fuel",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-20T08:15:00Z",
+        "source": "sms",
+        "raw_sms_text": "Your A/c XX1234 debited with Rs.350 at Shell Petrol on 20-Jan-2025",
+        "metadata": {
+            "payment_method": "Card",
+            "fuel_type": "Petrol",
+            "liters": 3.5
+        }
+    },
+    {
+        "transaction_id": "txn_20250119_001",
+        "user_id": "usr_9876543210",
+        "amount": 850.00,
+        "vendor": "Zomato Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-19T23:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Zomato",
+            "orders_completed": 10,
+            "peak_hours_orders": 5,
+            "avg_per_order": 85.00,
+            "tips_received": 100.00,
+            "distance_covered_km": 32
+        }
+    },
+    {
+        "transaction_id": "txn_20250119_002",
+        "user_id": "usr_9876543210",
+        "amount": 120.00,
+        "vendor": "Cafe Coffee Day",
+        "category": "food",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-19T16:45:00Z",
+        "source": "manual",
+        "raw_sms_text": null,
+        "metadata": {
+            "payment_method": "Cash",
+            "note": "Coffee break during deliveries"
+        }
+    },
+    {
+        "transaction_id": "txn_20250119_003",
+        "user_id": "usr_9876543210",
+        "amount": 250.00,
+        "vendor": "Dunzo Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-19T20:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Dunzo",
+            "orders_completed": 5,
+            "avg_per_order": 50.00,
+            "distance_covered_km": 15
+        }
+    },
+    {
+        "transaction_id": "txn_20250118_001",
+        "user_id": "usr_9876543210",
+        "amount": 1500.00,
+        "vendor": "Swiggy Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-18T23:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Swiggy",
+            "orders_completed": 18,
+            "peak_hours_orders": 12,
+            "avg_per_order": 83.33,
+            "tips_received": 200.00,
+            "distance_covered_km": 52,
+            "bonus_earned": 150.00
+        }
+    },
+    {
+        "transaction_id": "txn_20250118_002",
+        "user_id": "usr_9876543210",
+        "amount": 400.00,
+        "vendor": "HP Petrol Pump",
+        "category": "fuel",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-18T09:00:00Z",
+        "source": "sms",
+        "raw_sms_text": "Rs 400 debited from A/c XX1234 on 18-Jan-25 to HP Petrol",
+        "metadata": {
+            "payment_method": "UPI",
+            "fuel_type": "Petrol",
+            "liters": 4.0
+        }
+    },
+    {
+        "transaction_id": "txn_20250117_001",
+        "user_id": "usr_9876543210",
+        "amount": 800.00,
+        "vendor": "Bike Service Center",
+        "category": "bike_maintenance",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-17T14:30:00Z",
+        "source": "manual",
+        "raw_sms_text": null,
+        "metadata": {
+            "payment_method": "Cash",
+            "service_type": "Regular maintenance",
+            "note": "Oil change and brake adjustment"
+        }
+    },
+    {
+        "transaction_id": "txn_20250117_002",
+        "user_id": "usr_9876543210",
+        "amount": 1100.00,
+        "vendor": "Zomato Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-17T23:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Zomato",
+            "orders_completed": 12,
+            "peak_hours_orders": 7,
+            "avg_per_order": 91.67,
+            "tips_received": 150.00,
+            "distance_covered_km": 38
+        }
+    },
+    {
+        "transaction_id": "txn_20250116_001",
+        "user_id": "usr_9876543210",
+        "amount": 3500.00,
+        "vendor": "HDFC Bank",
+        "category": "bills",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-16T10:00:00Z",
+        "source": "sms",
+        "raw_sms_text": "Rs 3500 debited from A/c XX1234 on 16-Jan-25 for Bike EMI",
+        "metadata": {
+            "payment_method": "Auto-debit",
+            "bill_type": "Bike EMI",
+            "emi_month": "January 2025"
+        }
+    },
+    {
+        "transaction_id": "txn_20250116_002",
+        "user_id": "usr_9876543210",
+        "amount": 1350.00,
+        "vendor": "Swiggy Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-16T23:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Swiggy",
+            "orders_completed": 16,
+            "peak_hours_orders": 9,
+            "avg_per_order": 84.38,
+            "tips_received": 180.00,
+            "distance_covered_km": 48
+        }
+    },
+    {
+        "transaction_id": "txn_20250115_001",
+        "user_id": "usr_9876543210",
+        "amount": 250.00,
+        "vendor": "Big Bazaar",
+        "category": "shopping",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-15T18:30:00Z",
+        "source": "sms",
+        "raw_sms_text": "Rs 250 debited from A/c XX1234 on 15-Jan-25 to Big Bazaar",
+        "metadata": {
+            "payment_method": "Card",
+            "note": "Groceries"
+        }
+    },
+    {
+        "transaction_id": "txn_20250115_002",
+        "user_id": "usr_9876543210",
+        "amount": 950.00,
+        "vendor": "Zomato Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-15T23:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Zomato",
+            "orders_completed": 11,
+            "peak_hours_orders": 6,
+            "avg_per_order": 86.36,
+            "tips_received": 120.00,
+            "distance_covered_km": 35
+        }
+    },
+    {
+        "transaction_id": "txn_20250114_001",
+        "user_id": "usr_9876543210",
+        "amount": 300.00,
+        "vendor": "BookMyShow",
+        "category": "entertainment",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-14T20:00:00Z",
+        "source": "sms",
+        "raw_sms_text": "Rs 300 debited from A/c XX1234 on 14-Jan-25 to BookMyShow",
+        "metadata": {
+            "payment_method": "UPI",
+            "note": "Movie tickets"
+        }
+    },
+    {
+        "transaction_id": "txn_20250114_002",
+        "user_id": "usr_9876543210",
+        "amount": 1400.00,
+        "vendor": "Swiggy Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-14T23:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Swiggy",
+            "orders_completed": 17,
+            "peak_hours_orders": 10,
+            "avg_per_order": 82.35,
+            "tips_received": 170.00,
+            "distance_covered_km": 50
+        }
+    },
+    {
+        "transaction_id": "txn_20250113_001",
+        "user_id": "usr_9876543210",
+        "amount": 500.00,
+        "vendor": "Apollo Pharmacy",
+        "category": "healthcare",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-13T11:00:00Z",
+        "source": "manual",
+        "raw_sms_text": null,
+        "metadata": {
+            "payment_method": "Cash",
+            "note": "Medicines"
+        }
+    },
+    {
+        "transaction_id": "txn_20250113_002",
+        "user_id": "usr_9876543210",
+        "amount": 350.00,
+        "vendor": "Indian Oil Petrol",
+        "category": "fuel",
+        "transaction_type": "debit",
+        "timestamp": "2025-01-13T08:30:00Z",
+        "source": "sms",
+        "raw_sms_text": "Rs 350 debited from A/c XX1234 on 13-Jan-25 to Indian Oil",
+        "metadata": {
+            "payment_method": "Card",
+            "fuel_type": "Petrol",
+            "liters": 3.5
+        }
+    },
+    {
+        "transaction_id": "txn_20250113_003",
+        "user_id": "usr_9876543210",
+        "amount": 1250.00,
+        "vendor": "Swiggy Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-13T23:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Swiggy",
+            "orders_completed": 15,
+            "peak_hours_orders": 8,
+            "avg_per_order": 83.33,
+            "tips_received": 160.00,
+            "distance_covered_km": 46
+        }
+    },
+    {
+        "transaction_id": "txn_20250112_001",
+        "user_id": "usr_9876543210",
+        "amount": 1000.00,
+        "vendor": "Zomato Earnings",
+        "category": "income",
+        "transaction_type": "credit",
+        "timestamp": "2025-01-12T23:00:00Z",
+        "source": "aa",
+        "raw_sms_text": null,
+        "metadata": {
+            "platform": "Zomato",
+            "orders_completed": 11,
+            "peak_hours_orders": 6,
+            "avg_per_order": 90.91,
+            "tips_received": 130.00,
+            "distance_covered_km": 36
+        }
+    }
+]
