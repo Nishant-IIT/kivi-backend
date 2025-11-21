@@ -35,6 +35,9 @@ logger = logging.getLogger("kivi.db")
 # Global MongoDB client
 client: Optional[AsyncIOMotorClient] = None
 
+# Global mock database instance (persists across requests)
+mock_db: Optional["MockDatabase"] = None
+
 
 async def connect_db() -> None:
     """
@@ -92,9 +95,15 @@ def get_db() -> Any:
     Returns:
         MockDatabase or AsyncIOMotorDatabase: Database instance
     """
+    global mock_db
+    
     if USE_MOCK_DATA:
-        logger.debug("Returning MockDatabase instance")
-        return MockDatabase()
+        # Use singleton mock database to persist data across requests
+        if mock_db is None:
+            logger.info("Creating singleton MockDatabase instance")
+            mock_db = MockDatabase()
+        logger.debug("Returning singleton MockDatabase instance")
+        return mock_db
     
     if client is None:
         logger.error("MongoDB client not initialized - call connect_db() first")

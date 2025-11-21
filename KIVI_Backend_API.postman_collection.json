@@ -1,0 +1,522 @@
+{
+    "info": {
+        "_postman_id": "kivi-backend-api-2025",
+        "name": "KIVI Backend API",
+        "description": "Complete API collection for KIVI Backend - AI-powered financial management platform for gig workers.\n\nFeatures:\n- WhatsApp integration\n- AI chat (OpenAI, Anthropic)\n- SMS transaction parsing\n- Financial dashboard and reports\n- User profile management\n- Proactive notifications",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "if (pm.response.code === 200) {",
+                                    "    var jsonData = pm.response.json();",
+                                    "    pm.environment.set(\"access_token\", jsonData.access_token);",
+                                    "    pm.environment.set(\"user_id\", jsonData.user_id);",
+                                    "    pm.environment.set(\"phone\", jsonData.phone);",
+                                    "}"
+                                ],
+                                "type": "text/javascript"
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phone\": \"+919876543210\",\n  \"password\": \"demo123\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/login",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "login"
+                            ]
+                        },
+                        "description": "Authenticate user and receive JWT access token.\n\nFor hackathon/demo: Use password \"demo123\" for any phone number.\nFirst-time users are automatically onboarded with sample gig worker data."
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Authentication endpoints for user login and JWT token generation."
+        },
+        {
+            "name": "User Profile",
+            "item": [
+                {
+                    "name": "Get User Profile",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/users/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "users",
+                                "me"
+                            ]
+                        },
+                        "description": "Retrieve authenticated user's complete profile including financial summary, budgets, goals, and notification preferences."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update User Profile",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Rahul Kumar\",\n  \"city\": \"Delhi\",\n  \"job\": \"Freelance Designer\",\n  \"gig_platforms\": [\"Upwork\", \"Fiverr\", \"Freelancer\"]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/users/me",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "users",
+                                "me"
+                            ]
+                        },
+                        "description": "Update authenticated user's profile. Supports partial updates - only provided fields will be updated."
+                    },
+                    "response": []
+                }
+            ],
+            "description": "User profile management endpoints. All endpoints require JWT authentication."
+        },
+        {
+            "name": "Finance & Transactions",
+            "item": [
+                {
+                    "name": "Get Transactions",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/transactions?start_date=2025-01-01T00:00:00Z&end_date=2025-01-31T23:59:59Z&category=food",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "transactions"
+                            ],
+                            "query": [
+                                {
+                                    "key": "start_date",
+                                    "value": "2025-01-01T00:00:00Z",
+                                    "description": "Start date (ISO 8601)",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "end_date",
+                                    "value": "2025-01-31T23:59:59Z",
+                                    "description": "End date (ISO 8601)",
+                                    "disabled": true
+                                },
+                                {
+                                    "key": "category",
+                                    "value": "food",
+                                    "description": "Filter by category",
+                                    "disabled": true
+                                }
+                            ]
+                        },
+                        "description": "Retrieve transaction history with optional filters (start_date, end_date, category)."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Manual Transaction",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"amount\": 450.00,\n  \"vendor\": \"Swiggy\",\n  \"transaction_type\": \"debit\",\n  \"metadata\": {\n    \"payment_method\": \"UPI\",\n    \"note\": \"Dinner order\"\n  }\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/transactions",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "transactions"
+                            ]
+                        },
+                        "description": "Create manual transaction entry. Category is auto-categorized if not provided."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Parse SMS Transaction",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"sms_text\": \"Rs 450 debited from A/c XX1234 on 20-Jan-25 to Swiggy\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/transactions/sms",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "transactions",
+                                "sms"
+                            ]
+                        },
+                        "description": "Parse SMS text and create transaction automatically. Extracts amount, vendor, type, and auto-categorizes."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Dashboard",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/dashboard",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "dashboard"
+                            ]
+                        },
+                        "description": "Get comprehensive dashboard summary including balance, spending, category breakdown, budgets, recent transactions, and personalized nudges."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Weekly Report",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/reports/weekly",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reports",
+                                "weekly"
+                            ]
+                        },
+                        "description": "Get weekly spending report with comparison to previous week, including total spent/earned, top categories, and transaction count."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Monthly Report",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/reports/monthly",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reports",
+                                "monthly"
+                            ]
+                        },
+                        "description": "Get monthly spending report with gig worker insights, including category trends, budget adherence, daily average, and platform-specific earnings analysis."
+                    },
+                    "response": []
+                }
+            ],
+            "description": "Financial transaction management, SMS parsing, dashboard, and reporting endpoints."
+        },
+        {
+            "name": "WhatsApp Integration",
+            "item": [
+                {
+                    "name": "WhatsApp Webhook",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"object\": \"whatsapp_business_account\",\n  \"entry\": [\n    {\n      \"id\": \"123456789\",\n      \"changes\": [\n        {\n          \"value\": {\n            \"messaging_product\": \"whatsapp\",\n            \"metadata\": {\n              \"display_phone_number\": \"919876543210\",\n              \"phone_number_id\": \"123456789\"\n            },\n            \"contacts\": [\n              {\n                \"profile\": {\n                  \"name\": \"Rahul Sharma\"\n                },\n                \"wa_id\": \"919876543210\"\n              }\n            ],\n            \"messages\": [\n              {\n                \"from\": \"919876543210\",\n                \"id\": \"wamid.HBgNOTE5ODc2NTQzMjEwFQIAERgSMDhBRjE2QjdGNzY4QzQ5OTJBAA==\",\n                \"timestamp\": \"1706123456\",\n                \"text\": {\n                  \"body\": \"How much did I spend on food this month?\"\n                },\n                \"type\": \"text\"\n              }\n            ]\n          },\n          \"field\": \"messages\"\n        }\n      ]\n    }\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/whatsapp/webhook",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "whatsapp",
+                                "webhook"
+                            ]
+                        },
+                        "description": "Receive incoming WhatsApp messages from Meta Cloud API. This endpoint is called by Meta, not directly by users. Returns 200 OK immediately and processes message in background."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Send Notification",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"phone\": \"+919876543210\",\n  \"text\": \"You've exceeded your food budget by ₹200 this month. Consider cooking at home more often!\",\n  \"provider\": \"openai\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/whatsapp/send_notification",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "whatsapp",
+                                "send_notification"
+                            ]
+                        },
+                        "description": "Send proactive WhatsApp notification to user. Used for budget alerts, spending insights, and other notifications."
+                    },
+                    "response": []
+                }
+            ],
+            "description": "WhatsApp webhook and notification endpoints for Meta Cloud API integration."
+        },
+        {
+            "name": "AI Chat",
+            "item": [
+                {
+                    "name": "Chat with AI",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{access_token}}",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"user_id\": \"{{user_id}}\",\n  \"phone\": \"{{phone}}\",\n  \"metadata\": {\n    \"name\": \"Rahul Sharma\",\n    \"job\": \"Delivery Partner\",\n    \"gig_platforms\": [\"Swiggy\", \"Zomato\"],\n    \"transaction_summary\": {\n      \"balance\": 12000.00,\n      \"monthly_spending\": 8500.00,\n      \"monthly_income\": 28000.00\n    }\n  },\n  \"message\": \"How much did I spend on food this month?\",\n  \"provider\": \"openai\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/ai/chat",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "ai",
+                                "chat"
+                            ]
+                        },
+                        "description": "Send chat message from mobile app and receive AI response. Supports both OpenAI and Anthropic providers."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "AI Health Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/api/v1/ai/health",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "ai",
+                                "health"
+                            ]
+                        },
+                        "description": "Health check endpoint for AI chat service."
+                    },
+                    "response": []
+                }
+            ],
+            "description": "AI chat endpoints for mobile app integration. Provides same functionality as WhatsApp but through REST API."
+        },
+        {
+            "name": "System",
+            "item": [
+                {
+                    "name": "Root",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                ""
+                            ]
+                        },
+                        "description": "Root endpoint providing API information including project name, description, version, and features."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{base_url}}/health",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "health"
+                            ]
+                        },
+                        "description": "Health check endpoint for monitoring and load balancers."
+                    },
+                    "response": []
+                }
+            ],
+            "description": "System endpoints for API information and health checks."
+        }
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "http://localhost:8000",
+            "type": "string"
+        },
+        {
+            "key": "access_token",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "user_id",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "phone",
+            "value": "",
+            "type": "string"
+        }
+    ]
+}
