@@ -2,20 +2,21 @@
 User Profile Routes Module
 
 Purpose:
-    Provides endpoints for retrieving and updating authenticated user profiles.
-    Handles user profile management with validation and database persistence.
+    Provides endpoints for user profile management including retrieval
+    and updates. All endpoints require JWT authentication via the
+    get_current_user dependency.
 
 Dependencies:
     - fastapi: Web framework and routing
     - pydantic: Request/response validation
-    - app.core.security: Authentication dependency (get_current_user)
+    - app.core.security: Authentication dependency
     - app.models.user_model: User data access and validation
     - app.db.mongodb: Database connection
 
 Endpoints:
     GET /users/me
         Retrieve authenticated user's profile
-        Requires: Authorization Bearer token
+        Requires: Authorization header with Bearer token
         Returns: Complete user profile with financial data
         
         Response (200 OK):
@@ -26,7 +27,7 @@ Endpoints:
                 "email": "rahul@example.com",
                 "job": "Delivery Partner",
                 "city": "Mumbai",
-                "gig_platforms": ["Swiggy", "Zomato", "Dunzo"],
+                "gig_platforms": ["Swiggy", "Zomato"],
                 "financial_summary": {...},
                 "budgets": [...],
                 "goals": [...],
@@ -37,27 +38,28 @@ Endpoints:
     
     PUT /users/me
         Update authenticated user's profile
-        Requires: Authorization Bearer token
+        Requires: Authorization header with Bearer token
         Request Body: Partial or complete user profile fields
         Returns: Updated user profile
         
-        Request Body (partial update example):
+        Request Body:
             {
-                "name": "Rahul Kumar Sharma",
-                "city": "Pune",
-                "job": "Freelance Designer"
+                "name": "Rahul Kumar",
+                "city": "Delhi",
+                "job": "Freelance Designer",
+                "gig_platforms": ["Upwork", "Fiverr"]
             }
         
         Response (200 OK):
             {
                 "user_id": "usr_9876543210",
                 "phone": "+919876543210",
-                "name": "Rahul Kumar Sharma",
+                "name": "Rahul Kumar",
                 ...
             }
 
 Usage:
-    # Get current user profile
+    # Get user profile
     curl -X GET http://localhost:8000/api/v1/users/me \
       -H "Authorization: Bearer <access_token>"
     
@@ -65,7 +67,7 @@ Usage:
     curl -X PUT http://localhost:8000/api/v1/users/me \
       -H "Authorization: Bearer <access_token>" \
       -H "Content-Type: application/json" \
-      -d '{"name": "New Name", "city": "Pune"}'
+      -d '{"name": "New Name", "city": "Delhi"}'
 
 Reference:
     Requirements: 6.1, 6.2, 6.5
@@ -78,9 +80,9 @@ import logging
 
 from app.core.security import get_current_user
 from app.models.user_model import (
+    UserProfile,
     get_user_by_phone,
     upsert_user,
-    UserProfile,
     FinancialSummary,
     Budget,
     Goal,
@@ -95,7 +97,7 @@ logger = logging.getLogger("kivi.user")
 router = APIRouter(prefix="/api/v1", tags=["user"])
 
 
-class UserUpdateRequest(BaseModel):
+class UserProfileUpdateRequest(BaseModel):
     """
     User profile update request schema.
     
@@ -118,10 +120,10 @@ class UserUpdateRequest(BaseModel):
     job: Optional[str] = Field(None, description="User's job title", example="Delivery Partner")
     city: Optional[str] = Field(None, description="User's city", example="Mumbai")
     gig_platforms: Optional[List[str]] = Field(None, description="List of gig platforms", example=["Swiggy", "Zomato"])
-    financial_summary: Optional[Dict[str, Any]] = Field(None, description="Financial summary data")
-    budgets: Optional[List[Dict[str, Any]]] = Field(None, description="Budget configurations")
-    goals: Optional[List[Dict[str, Any]]] = Field(None, description="Financial goals")
-    notification_preferences: Optional[Dict[str, Any]] = Field(None, description="Notification settings")
+    financial_summary: Optional[FinancialSummary] = Field(None, description="Financial summary data")
+    budgets: Optional[List[Budget]] = Field(None, description="Budget configurations")
+    goals: Optional[List[Goal]] = Field(None, description="Financial goals")
+    notification_preferences: Optional[NotificationPreferences] = Field(None, description="Notification settings")
 
 
 @router.get("/users/me", response_model=UserProfile, status_code=status.HTTP_200_OK)
@@ -141,7 +143,7 @@ async def get_user_profile(
         db: Database instance (injected dependency)
     
     Returns:
-        UserProfile with all user data
+        UserProfile: Complete user profile data
     
     Raises:
         HTTPException 401: If authentication fails (handled by dependency)
@@ -150,13 +152,14 @@ async def get_user_profile(
     
     Example:
         GET /api/v1/users/me
-        Headers: Authorization: Bearer <token>
+        Headers: Authorization: Bearer eyJhbGc...
         
         Response:
         {
             "user_id": "usr_9876543210",
             "phone": "+919876543210",
             "name": "Rahul Sharma",
+            "job": "Delivery Partner",
             ...
         }
     """
@@ -170,7 +173,7 @@ async def get_user_profile(
         user = await get_user_by_phone(db, phone)
         
         if not user:
-            logger.error(f"User profile not found for user_id: {user_id}, phone: {phone}")
+            logger.warning(f"User profile not found for user_id: {user_id}, phone: {phone}")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="User profile not found"
@@ -178,11 +181,7 @@ async def get_user_profile(
         
         logger.info(f"Successfully retrieved profile for user: {user_id}")
         
-        # Convert MongoDB document to UserProfile model
-        # Remove MongoDB _id field if present
-        if "_id" in user:
-            del user["_id"]
-        
+        # Return user profile (Pydantic will validate and serialize)
         return UserProfile(**user)
     
     except HTTPException:
@@ -200,24 +199,24 @@ async def get_user_profile(
 
 @router.put("/users/me", response_model=UserProfile, status_code=status.HTTP_200_OK)
 async def update_user_profile(
-    update_data: UserUpdateRequest,
+    update_data: UserProfileUpdateRequest,
     current_user: Dict[str, Any] = Depends(get_current_user),
     db: Any = Depends(get_db)
 ) -> UserProfile:
     """
     Update authenticated user's profile.
     
-    Accepts partial updates - only provided fields will be updated.
-    Validates request body with Pydantic model and persists changes
-    to database. Automatically updates the updated_at timestamp.
+    Accepts partial or complete profile updates. Only provided fields
+    will be updated in the database. Validates request body with Pydantic
+    models and updates the user profile in the database.
     
     Args:
-        update_data: User profile fields to update
+        update_data: Profile update data (partial updates supported)
         current_user: Authenticated user info from JWT token (injected)
         db: Database instance (injected dependency)
     
     Returns:
-        Updated UserProfile with all user data
+        UserProfile: Updated user profile data
     
     Raises:
         HTTPException 401: If authentication fails (handled by dependency)
@@ -227,21 +226,21 @@ async def update_user_profile(
     
     Example:
         PUT /api/v1/users/me
-        Headers: Authorization: Bearer <token>
+        Headers: Authorization: Bearer eyJhbGc...
         Body:
         {
-            "name": "Rahul Kumar Sharma",
-            "city": "Pune",
-            "job": "Freelance Designer"
+            "name": "Rahul Kumar",
+            "city": "Delhi",
+            "gig_platforms": ["Uber", "Ola"]
         }
         
         Response:
         {
             "user_id": "usr_9876543210",
             "phone": "+919876543210",
-            "name": "Rahul Kumar Sharma",
-            "city": "Pune",
-            "job": "Freelance Designer",
+            "name": "Rahul Kumar",
+            "city": "Delhi",
+            "gig_platforms": ["Uber", "Ola"],
             ...
         }
     """
@@ -251,49 +250,52 @@ async def update_user_profile(
     logger.info(f"Updating profile for user: {user_id}")
     
     try:
-        # Step 1: Get existing user profile
+        # Step 1: Retrieve existing user profile
         existing_user = await get_user_by_phone(db, phone)
         
         if not existing_user:
-            logger.error(f"User profile not found for user_id: {user_id}, phone: {phone}")
+            logger.warning(f"User profile not found for user_id: {user_id}, phone: {phone}")
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="User profile not found"
             )
         
         # Step 2: Build update dictionary with only provided fields
-        update_dict = update_data.model_dump(exclude_unset=True)
+        update_dict = {}
         
-        if not update_dict:
-            # No fields to update, return existing profile
-            logger.info(f"No fields to update for user: {user_id}")
-            if "_id" in existing_user:
-                del existing_user["_id"]
-            return UserProfile(**existing_user)
+        # Convert Pydantic model to dict, excluding unset fields
+        update_fields = update_data.model_dump(exclude_unset=True)
         
-        logger.debug(f"Updating fields for user {user_id}: {list(update_dict.keys())}")
+        # Log which fields are being updated
+        if update_fields:
+            logger.debug(f"Updating fields for user {user_id}: {list(update_fields.keys())}")
+        else:
+            logger.info(f"No fields to update for user {user_id}")
         
-        # Step 3: Merge update data with existing user data
-        # Start with existing user data
-        updated_user_data = existing_user.copy()
+        # Merge update fields with existing user data
+        for key, value in update_fields.items():
+            # Convert nested Pydantic models to dicts
+            if isinstance(value, BaseModel):
+                update_dict[key] = value.model_dump()
+            elif isinstance(value, list) and value and isinstance(value[0], BaseModel):
+                update_dict[key] = [item.model_dump() for item in value]
+            else:
+                update_dict[key] = value
         
-        # Update with new values
-        for key, value in update_dict.items():
-            updated_user_data[key] = value
+        # Preserve user_id and phone (cannot be changed)
+        update_dict["user_id"] = existing_user["user_id"]
+        update_dict["phone"] = existing_user["phone"]
         
-        # Ensure phone and user_id are preserved
-        updated_user_data["phone"] = phone
-        updated_user_data["user_id"] = user_id
+        # Preserve created_at timestamp
+        if "created_at" in existing_user:
+            update_dict["created_at"] = existing_user["created_at"]
         
-        # Step 4: Persist updated profile to database
-        updated_user = await upsert_user(db, updated_user_data)
+        # Step 3: Update user in database
+        updated_user = await upsert_user(db, update_dict)
         
         logger.info(f"Successfully updated profile for user: {user_id}")
         
-        # Step 5: Return updated profile
-        if "_id" in updated_user:
-            del updated_user["_id"]
-        
+        # Return updated user profile
         return UserProfile(**updated_user)
     
     except HTTPException:

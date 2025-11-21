@@ -1,0 +1,252 @@
+[
+    {
+        "description": "Standard debit transaction - Food delivery",
+        "sms_text": "Rs 450 debited from A/c XX1234 on 20-Jan-25 to Swiggy",
+        "expected_parse": {
+            "amount": 450.00,
+            "vendor": "Swiggy",
+            "transaction_type": "debit",
+            "category": "food"
+        }
+    },
+    {
+        "description": "Credit transaction - Gig platform earnings",
+        "sms_text": "INR 1200.50 credited to A/c XX5678 from Zomato on 21-Jan-25",
+        "expected_parse": {
+            "amount": 1200.50,
+            "vendor": "Zomato",
+            "transaction_type": "credit",
+            "category": "income"
+        }
+    },
+    {
+        "description": "Fuel purchase - Petrol pump",
+        "sms_text": "Your A/c XX1234 debited with Rs.350 at Shell Petrol on 22-Jan-2025",
+        "expected_parse": {
+            "amount": 350.00,
+            "vendor": "Shell Petrol",
+            "transaction_type": "debit",
+            "category": "fuel"
+        }
+    },
+    {
+        "description": "UPI payment - Food order",
+        "sms_text": "Rs 280 debited from A/c XX9876 via UPI to Zomato on 23-Jan-25 at 20:15",
+        "expected_parse": {
+            "amount": 280.00,
+            "vendor": "Zomato",
+            "transaction_type": "debit",
+            "category": "food"
+        }
+    },
+    {
+        "description": "Swiggy earnings - Daily payout",
+        "sms_text": "Rs 1500 credited to your A/c XX1234 from Swiggy Payments on 24-Jan-25",
+        "expected_parse": {
+            "amount": 1500.00,
+            "vendor": "Swiggy",
+            "transaction_type": "credit",
+            "category": "income"
+        }
+    },
+    {
+        "description": "Bike maintenance - Service center",
+        "sms_text": "Rs 800 debited from A/c XX1234 on 25-Jan-25 to Honda Service Center",
+        "expected_parse": {
+            "amount": 800.00,
+            "vendor": "Honda Service Center",
+            "transaction_type": "debit",
+            "category": "bike_maintenance"
+        }
+    },
+    {
+        "description": "EMI payment - Bike loan",
+        "sms_text": "Rs 3500 debited from A/c XX1234 on 05-Jan-25 for HDFC Bike Loan EMI",
+        "expected_parse": {
+            "amount": 3500.00,
+            "vendor": "HDFC",
+            "transaction_type": "debit",
+            "category": "bills"
+        }
+    },
+    {
+        "description": "Grocery shopping",
+        "sms_text": "Rs 650 debited from A/c XX1234 on 26-Jan-25 to Big Bazaar",
+        "expected_parse": {
+            "amount": 650.00,
+            "vendor": "Big Bazaar",
+            "transaction_type": "debit",
+            "category": "shopping"
+        }
+    },
+    {
+        "description": "Mobile recharge",
+        "sms_text": "Rs 299 debited from A/c XX1234 on 27-Jan-25 to Jio Recharge",
+        "expected_parse": {
+            "amount": 299.00,
+            "vendor": "Jio",
+            "transaction_type": "debit",
+            "category": "bills"
+        }
+    },
+    {
+        "description": "Dunzo earnings - Delivery payout",
+        "sms_text": "INR 450 credited to A/c XX1234 from Dunzo on 28-Jan-25",
+        "expected_parse": {
+            "amount": 450.00,
+            "vendor": "Dunzo",
+            "transaction_type": "credit",
+            "category": "income"
+        }
+    },
+    {
+        "description": "Medicine purchase",
+        "sms_text": "Rs 320 debited from A/c XX1234 on 29-Jan-25 to Apollo Pharmacy",
+        "expected_parse": {
+            "amount": 320.00,
+            "vendor": "Apollo Pharmacy",
+            "transaction_type": "debit",
+            "category": "healthcare"
+        }
+    },
+    {
+        "description": "Movie tickets",
+        "sms_text": "Rs 400 debited from A/c XX1234 on 30-Jan-25 to BookMyShow",
+        "expected_parse": {
+            "amount": 400.00,
+            "vendor": "BookMyShow",
+            "transaction_type": "debit",
+            "category": "entertainment"
+        }
+    },
+    {
+        "description": "Electricity bill payment",
+        "sms_text": "Rs 1200 debited from A/c XX1234 on 31-Jan-25 for MSEB Bill Payment",
+        "expected_parse": {
+            "amount": 1200.00,
+            "vendor": "MSEB",
+            "transaction_type": "debit",
+            "category": "bills"
+        }
+    },
+    {
+        "description": "Uber earnings - Weekly payout",
+        "sms_text": "Rs 5500 credited to A/c XX1234 from Uber India on 01-Feb-25",
+        "expected_parse": {
+            "amount": 5500.00,
+            "vendor": "Uber",
+            "transaction_type": "credit",
+            "category": "income"
+        }
+    },
+    {
+        "description": "Fuel - HP Petrol",
+        "sms_text": "Rs 400 debited from A/c XX1234 on 02-Feb-25 to HP Petrol Pump",
+        "expected_parse": {
+            "amount": 400.00,
+            "vendor": "HP Petrol",
+            "transaction_type": "debit",
+            "category": "fuel"
+        }
+    },
+    {
+        "description": "Food delivery - Dominos",
+        "sms_text": "Rs 599 debited from A/c XX1234 on 03-Feb-25 to Dominos Pizza",
+        "expected_parse": {
+            "amount": 599.00,
+            "vendor": "Dominos",
+            "transaction_type": "debit",
+            "category": "food"
+        }
+    },
+    {
+        "description": "Ola earnings - Daily payout",
+        "sms_text": "INR 2200 credited to your A/c XX1234 from Ola Cabs on 04-Feb-25",
+        "expected_parse": {
+            "amount": 2200.00,
+            "vendor": "Ola",
+            "transaction_type": "credit",
+            "category": "income"
+        }
+    },
+    {
+        "description": "Clothing purchase",
+        "sms_text": "Rs 1500 debited from A/c XX1234 on 05-Feb-25 to Pantaloons",
+        "expected_parse": {
+            "amount": 1500.00,
+            "vendor": "Pantaloons",
+            "transaction_type": "debit",
+            "category": "shopping"
+        }
+    },
+    {
+        "description": "Bike insurance premium",
+        "sms_text": "Rs 4500 debited from A/c XX1234 on 06-Feb-25 for Bajaj Allianz Insurance",
+        "expected_parse": {
+            "amount": 4500.00,
+            "vendor": "Bajaj Allianz",
+            "transaction_type": "debit",
+            "category": "bills"
+        }
+    },
+    {
+        "description": "Rapido earnings - Weekly payout",
+        "sms_text": "Rs 3200 credited to A/c XX1234 from Rapido on 07-Feb-25",
+        "expected_parse": {
+            "amount": 3200.00,
+            "vendor": "Rapido",
+            "transaction_type": "credit",
+            "category": "income"
+        }
+    },
+    {
+        "description": "Coffee shop - Break during work",
+        "sms_text": "Rs 150 debited from A/c XX1234 on 08-Feb-25 to Cafe Coffee Day",
+        "expected_parse": {
+            "amount": 150.00,
+            "vendor": "Cafe Coffee Day",
+            "transaction_type": "debit",
+            "category": "food"
+        }
+    },
+    {
+        "description": "Bike spare parts",
+        "sms_text": "Rs 650 debited from A/c XX1234 on 09-Feb-25 to Honda Spare Parts",
+        "expected_parse": {
+            "amount": 650.00,
+            "vendor": "Honda Spare Parts",
+            "transaction_type": "debit",
+            "category": "bike_maintenance"
+        }
+    },
+    {
+        "description": "Internet bill",
+        "sms_text": "Rs 799 debited from A/c XX1234 on 10-Feb-25 for Jio Fiber Bill",
+        "expected_parse": {
+            "amount": 799.00,
+            "vendor": "Jio Fiber",
+            "transaction_type": "debit",
+            "category": "bills"
+        }
+    },
+    {
+        "description": "Freelance payment - Upwork",
+        "sms_text": "USD 150 (INR 12450) credited to A/c XX1234 from Upwork on 11-Feb-25",
+        "expected_parse": {
+            "amount": 12450.00,
+            "vendor": "Upwork",
+            "transaction_type": "credit",
+            "category": "income"
+        }
+    },
+    {
+        "description": "Gym membership",
+        "sms_text": "Rs 1000 debited from A/c XX1234 on 12-Feb-25 to Gold's Gym",
+        "expected_parse": {
+            "amount": 1000.00,
+            "vendor": "Gold's Gym",
+            "transaction_type": "debit",
+            "category": "healthcare"
+        }
+    }
+]

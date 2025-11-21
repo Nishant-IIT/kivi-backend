@@ -1,0 +1,170 @@
+{
+    "description": "Sample WhatsApp webhook payload from Meta Cloud API showing a conversation about spending analysis",
+    "object": "whatsapp_business_account",
+    "entry": [
+        {
+            "id": "123456789012345",
+            "changes": [
+                {
+                    "value": {
+                        "messaging_product": "whatsapp",
+                        "metadata": {
+                            "display_phone_number": "919876543210",
+                            "phone_number_id": "123456789012345"
+                        },
+                        "contacts": [
+                            {
+                                "profile": {
+                                    "name": "Rahul Sharma"
+                                },
+                                "wa_id": "919876543210"
+                            }
+                        ],
+                        "messages": [
+                            {
+                                "from": "919876543210",
+                                "id": "wamid.HBgNOTE5ODc2NTQzMjEwFQIAERgSMDhBRjE2QjdGNzY4QzQ5OTJBAA==",
+                                "timestamp": "1706123456",
+                                "text": {
+                                    "body": "How much did I spend on food this month?"
+                                },
+                                "type": "text"
+                            }
+                        ]
+                    },
+                    "field": "messages"
+                }
+            ]
+        }
+    ],
+    "conversation_examples": [
+        {
+            "user_message": "How much did I spend on food this month?",
+            "bot_response": "Based on your transaction history, you spent ₹3,200 on food this month. That's 64% of your ₹5,000 food budget, so you're doing well! You have ₹1,800 remaining for the rest of the month.",
+            "context": "User asking about food spending"
+        },
+        {
+            "user_message": "What were my earnings yesterday?",
+            "bot_response": "Yesterday you earned ₹1,200 from Swiggy (15 orders) and ₹850 from Zomato (10 orders), totaling ₹2,050. Great work! That's above your daily average of ₹1,800.",
+            "context": "User asking about daily earnings"
+        },
+        {
+            "user_message": "Am I on track with my emergency fund goal?",
+            "bot_response": "Your emergency fund currently has ₹12,000 out of your ₹30,000 target (40% complete). At your current monthly contribution of ₹3,000, you'll reach your goal by May 2025, which is ahead of your June 2025 deadline. Keep it up! 🎯",
+            "context": "User checking savings goal progress"
+        },
+        {
+            "user_message": "Which platform pays better?",
+            "bot_response": "Based on this month's data:\n\n🥇 Swiggy: ₹100/order average (180 orders, ₹18,000 total)\n🥈 Zomato: ₹87.50/order average (120 orders, ₹10,500 total)\n🥉 Dunzo: ₹60/order average (50 orders, ₹3,000 total)\n\nSwiggy is your best earner! Focus on peak hours (12-2pm, 7-10pm) for maximum earnings.",
+            "context": "User comparing gig platforms"
+        },
+        {
+            "user_message": "How much did I spend on fuel?",
+            "bot_response": "You spent ₹2,500 on fuel this month. That's 62.5% of your ₹4,000 fuel budget. You've covered approximately 180 km for deliveries. Consider optimizing routes to reduce fuel consumption.",
+            "context": "User asking about fuel expenses"
+        },
+        {
+            "user_message": "Show me my weekly summary",
+            "bot_response": "📊 Weekly Summary (Jan 13-19):\n\n💰 Earned: ₹8,000\n💸 Spent: ₹3,500\n📈 Net: +₹4,500\n\nTop spending:\n• Food: ₹1,200\n• Fuel: ₹800\n• Transport: ₹600\n\nYou spent 9.4% more than last week. Your earnings are strong! 💪",
+            "context": "User requesting weekly report"
+        },
+        {
+            "user_message": "When is my bike EMI due?",
+            "bot_response": "Your bike EMI of ₹3,500 is due on the 5th of every month. Your next payment is on Feb 5, 2025. You have ₹12,000 in your account, so you're covered. Your bike insurance expires on Jun 14, 2025.",
+            "context": "User asking about bike EMI"
+        },
+        {
+            "user_message": "Give me tips to save money",
+            "bot_response": "Here are personalized tips for you:\n\n1. 🍳 Cook at home more - You're spending ₹3,200/month on food orders\n2. ⛽ Optimize delivery routes - Could save ₹500/month on fuel\n3. 🕐 Work peak hours - Earn 20% more during 12-2pm & 7-10pm\n4. 💰 Build emergency fund - You're at 40%, aim for 3-6 months expenses\n5. 📱 Track daily expenses - Small purchases add up!\n\nSmall changes = Big savings! 💪",
+            "context": "User asking for savings advice"
+        },
+        {
+            "user_message": "What's my balance?",
+            "bot_response": "Your current balance is ₹12,000. Based on your average monthly expenses of ₹22,000, this covers about 16 days. Your emergency fund runway is 1.4 months. Consider building it up to 3-6 months for better financial security.",
+            "context": "User checking account balance"
+        },
+        {
+            "user_message": "How many orders did I complete today?",
+            "bot_response": "Today you completed:\n• Swiggy: 15 orders (₹1,200 earned)\n• Zomato: 10 orders (₹850 earned)\n• Total: 25 orders, ₹2,050 earned\n\nYou covered 45 km and received ₹150 in tips. Excellent day! 🎉",
+            "context": "User asking about daily order count"
+        }
+    ],
+    "webhook_verification": {
+        "description": "Meta sends a verification request when you first set up the webhook",
+        "method": "GET",
+        "query_params": {
+            "hub.mode": "subscribe",
+            "hub.challenge": "1234567890",
+            "hub.verify_token": "kivi-verify-token"
+        },
+        "expected_response": "1234567890",
+        "note": "Your webhook endpoint should return the hub.challenge value if hub.verify_token matches your configured WHATSAPP_VERIFY_TOKEN"
+    },
+    "message_types": {
+        "text_message": {
+            "from": "919876543210",
+            "id": "wamid.HBgNOTE5ODc2NTQzMjEwFQIAERgSMDhBRjE2QjdGNzY4QzQ5OTJBAA==",
+            "timestamp": "1706123456",
+            "text": {
+                "body": "How much did I spend on food this month?"
+            },
+            "type": "text"
+        },
+        "image_message": {
+            "from": "919876543210",
+            "id": "wamid.HBgNOTE5ODc2NTQzMjEwFQIAERgSMDhBRjE2QjdGNzY4QzQ5OTJCAA==",
+            "timestamp": "1706123457",
+            "image": {
+                "mime_type": "image/jpeg",
+                "sha256": "abc123...",
+                "id": "1234567890"
+            },
+            "type": "image"
+        },
+        "location_message": {
+            "from": "919876543210",
+            "id": "wamid.HBgNOTE5ODc2NTQzMjEwFQIAERgSMDhBRjE2QjdGNzY4QzQ5OTJDAA==",
+            "timestamp": "1706123458",
+            "location": {
+                "latitude": 19.0760,
+                "longitude": 72.8777,
+                "name": "Mumbai",
+                "address": "Mumbai, Maharashtra, India"
+            },
+            "type": "location"
+        }
+    },
+    "status_updates": {
+        "description": "Meta also sends status updates for messages you send",
+        "message_sent": {
+            "statuses": [
+                {
+                    "id": "wamid.HBgNOTE5ODc2NTQzMjEwFQIAERgSMDhBRjE2QjdGNzY4QzQ5OTJBAA==",
+                    "status": "sent",
+                    "timestamp": "1706123460",
+                    "recipient_id": "919876543210"
+                }
+            ]
+        },
+        "message_delivered": {
+            "statuses": [
+                {
+                    "id": "wamid.HBgNOTE5ODc2NTQzMjEwFQIAERgSMDhBRjE2QjdGNzY4QzQ5OTJBAA==",
+                    "status": "delivered",
+                    "timestamp": "1706123461",
+                    "recipient_id": "919876543210"
+                }
+            ]
+        },
+        "message_read": {
+            "statuses": [
+                {
+                    "id": "wamid.HBgNOTE5ODc2NTQzMjEwFQIAERgSMDhBRjE2QjdGNzY4QzQ5OTJBAA==",
+                    "status": "read",
+                    "timestamp": "1706123462",
+                    "recipient_id": "919876543210"
+                }
+            ]
+        }
+    }
+}
