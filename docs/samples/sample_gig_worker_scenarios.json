@@ -1,0 +1,418 @@
+[
+    {
+        "persona_name": "Rahul - Delivery Partner",
+        "description": "Full-time delivery partner working on multiple platforms",
+        "profile": {
+            "user_id": "usr_rahul_001",
+            "phone": "+919876543210",
+            "name": "Rahul Sharma",
+            "age": 28,
+            "city": "Mumbai",
+            "job": "Delivery Partner",
+            "gig_platforms": [
+                "Swiggy",
+                "Zomato",
+                "Dunzo"
+            ],
+            "work_hours_per_day": 8,
+            "avg_orders_per_day": 15,
+            "bike_model": "Honda Activa",
+            "financial_summary": {
+                "current_balance": 12000.00,
+                "avg_monthly_income": 28000.00,
+                "monthly_expenses": 22000.00,
+                "income_volatility": "high",
+                "emergency_fund": 12000.00,
+                "income_sources": {
+                    "Swiggy": 18000.00,
+                    "Zomato": 10500.00,
+                    "Dunzo": 3000.00
+                }
+            },
+            "goals": [
+                {
+                    "name": "Emergency Fund",
+                    "target": 30000.00,
+                    "current": 12000.00,
+                    "priority": "high"
+                },
+                {
+                    "name": "Bike EMI Buffer",
+                    "target": 15000.00,
+                    "current": 5000.00,
+                    "priority": "medium"
+                }
+            ],
+            "challenges": [
+                "Irregular income",
+                "High fuel costs",
+                "Bike maintenance expenses",
+                "No paid leaves",
+                "Weather-dependent earnings"
+            ]
+        },
+        "typical_questions": [
+            "How much did I earn this week?",
+            "Which platform pays better?",
+            "How much did I spend on fuel?",
+            "Am I on track with my emergency fund?",
+            "What were my best earning days?"
+        ]
+    },
+    {
+        "persona_name": "Priya - Freelance Designer",
+        "description": "Freelance graphic designer working on multiple platforms",
+        "profile": {
+            "user_id": "usr_priya_002",
+            "phone": "+919876543211",
+            "name": "Priya Patel",
+            "age": 26,
+            "city": "Bangalore",
+            "job": "Freelance Graphic Designer",
+            "gig_platforms": [
+                "Upwork",
+                "Fiverr",
+                "Freelancer"
+            ],
+            "work_hours_per_day": 6,
+            "avg_projects_per_month": 8,
+            "financial_summary": {
+                "current_balance": 45000.00,
+                "avg_monthly_income": 55000.00,
+                "monthly_expenses": 35000.00,
+                "income_volatility": "medium",
+                "emergency_fund": 80000.00,
+                "income_sources": {
+                    "Upwork": 35000.00,
+                    "Fiverr": 15000.00,
+                    "Freelancer": 5000.00
+                }
+            },
+            "goals": [
+                {
+                    "name": "New Laptop",
+                    "target": 80000.00,
+                    "current": 30000.00,
+                    "priority": "high"
+                },
+                {
+                    "name": "Course Enrollment",
+                    "target": 25000.00,
+                    "current": 10000.00,
+                    "priority": "medium"
+                }
+            ],
+            "challenges": [
+                "Client payment delays",
+                "Project-based income",
+                "Software subscription costs",
+                "Tax planning complexity",
+                "Client acquisition costs"
+            ]
+        },
+        "typical_questions": [
+            "How much did I earn from Upwork this month?",
+            "What's my average project value?",
+            "How much did I spend on software subscriptions?",
+            "Am I saving enough for taxes?",
+            "When will I reach my laptop savings goal?"
+        ]
+    },
+    {
+        "persona_name": "Amit - Uber Driver",
+        "description": "Full-time ride-share driver working on Uber and Ola",
+        "profile": {
+            "user_id": "usr_amit_003",
+            "phone": "+919876543212",
+            "name": "Amit Kumar",
+            "age": 32,
+            "city": "Delhi",
+            "job": "Ride-Share Driver",
+            "gig_platforms": [
+                "Uber",
+                "Ola",
+                "Rapido"
+            ],
+            "work_hours_per_day": 10,
+            "avg_rides_per_day": 20,
+            "car_model": "Maruti Swift Dzire",
+            "financial_summary": {
+                "current_balance": 25000.00,
+                "avg_monthly_income": 45000.00,
+                "monthly_expenses": 35000.00,
+                "income_volatility": "high",
+                "emergency_fund": 25000.00,
+                "income_sources": {
+                    "Uber": 28000.00,
+                    "Ola": 15000.00,
+                    "Rapido": 2000.00
+                }
+            },
+            "goals": [
+                {
+                    "name": "Car Maintenance Fund",
+                    "target": 50000.00,
+                    "current": 15000.00,
+                    "priority": "high"
+                },
+                {
+                    "name": "Family Vacation",
+                    "target": 40000.00,
+                    "current": 8000.00,
+                    "priority": "low"
+                }
+            ],
+            "challenges": [
+                "High fuel costs",
+                "Car maintenance expenses",
+                "Platform commission fees",
+                "Traffic and parking fines",
+                "Long working hours"
+            ]
+        },
+        "typical_questions": [
+            "How many rides did I complete today?",
+            "What's my fuel expense this week?",
+            "Which platform gives better earnings?",
+            "How much did I spend on car maintenance?",
+            "What are my peak earning hours?"
+        ]
+    },
+    {
+        "persona_name": "Sneha - Content Writer",
+        "description": "Part-time content writer balancing freelance work with studies",
+        "profile": {
+            "user_id": "usr_sneha_004",
+            "phone": "+919876543213",
+            "name": "Sneha Reddy",
+            "age": 23,
+            "city": "Hyderabad",
+            "job": "Freelance Content Writer",
+            "gig_platforms": [
+                "Upwork",
+                "Fiverr",
+                "ContentFly"
+            ],
+            "work_hours_per_day": 4,
+            "avg_articles_per_month": 25,
+            "financial_summary": {
+                "current_balance": 18000.00,
+                "avg_monthly_income": 22000.00,
+                "monthly_expenses": 15000.00,
+                "income_volatility": "medium",
+                "emergency_fund": 20000.00,
+                "income_sources": {
+                    "Upwork": 12000.00,
+                    "Fiverr": 7000.00,
+                    "ContentFly": 3000.00
+                }
+            },
+            "goals": [
+                {
+                    "name": "Master's Degree Fund",
+                    "target": 200000.00,
+                    "current": 50000.00,
+                    "priority": "high"
+                },
+                {
+                    "name": "New Phone",
+                    "target": 30000.00,
+                    "current": 12000.00,
+                    "priority": "medium"
+                }
+            ],
+            "challenges": [
+                "Balancing studies and work",
+                "Inconsistent client flow",
+                "Low per-article rates",
+                "Payment delays",
+                "Limited work hours"
+            ]
+        },
+        "typical_questions": [
+            "How much did I earn this month?",
+            "Am I on track with my education savings?",
+            "What's my average earning per article?",
+            "How much can I save this month?",
+            "Which platform pays fastest?"
+        ]
+    },
+    {
+        "persona_name": "Vikram - Handyman",
+        "description": "Multi-skilled handyman taking jobs through Urban Company and local networks",
+        "profile": {
+            "user_id": "usr_vikram_005",
+            "phone": "+919876543214",
+            "name": "Vikram Singh",
+            "age": 35,
+            "city": "Pune",
+            "job": "Handyman",
+            "gig_platforms": [
+                "Urban Company",
+                "Housejoy",
+                "Local Network"
+            ],
+            "work_hours_per_day": 7,
+            "avg_jobs_per_week": 12,
+            "financial_summary": {
+                "current_balance": 32000.00,
+                "avg_monthly_income": 38000.00,
+                "monthly_expenses": 28000.00,
+                "income_volatility": "medium",
+                "emergency_fund": 40000.00,
+                "income_sources": {
+                    "Urban Company": 22000.00,
+                    "Housejoy": 8000.00,
+                    "Local Network": 8000.00
+                }
+            },
+            "goals": [
+                {
+                    "name": "Tool Upgrade",
+                    "target": 25000.00,
+                    "current": 10000.00,
+                    "priority": "high"
+                },
+                {
+                    "name": "Son's Education",
+                    "target": 100000.00,
+                    "current": 35000.00,
+                    "priority": "high"
+                }
+            ],
+            "challenges": [
+                "Tool and equipment costs",
+                "Travel expenses",
+                "Seasonal demand fluctuations",
+                "Physical strain",
+                "Competition from local workers"
+            ]
+        },
+        "typical_questions": [
+            "How many jobs did I complete this week?",
+            "What did I spend on tools and materials?",
+            "Am I earning enough for my son's education?",
+            "Which platform gives more jobs?",
+            "What's my average earning per job?"
+        ]
+    },
+    {
+        "persona_name": "Anjali - Yoga Instructor",
+        "description": "Freelance yoga instructor conducting online and offline classes",
+        "profile": {
+            "user_id": "usr_anjali_006",
+            "phone": "+919876543215",
+            "name": "Anjali Mehta",
+            "age": 29,
+            "city": "Mumbai",
+            "job": "Freelance Yoga Instructor",
+            "gig_platforms": [
+                "Cult.fit",
+                "Fitternity",
+                "Private Classes"
+            ],
+            "work_hours_per_day": 5,
+            "avg_classes_per_week": 20,
+            "financial_summary": {
+                "current_balance": 38000.00,
+                "avg_monthly_income": 42000.00,
+                "monthly_expenses": 30000.00,
+                "income_volatility": "low",
+                "emergency_fund": 60000.00,
+                "income_sources": {
+                    "Cult.fit": 15000.00,
+                    "Fitternity": 10000.00,
+                    "Private Classes": 17000.00
+                }
+            },
+            "goals": [
+                {
+                    "name": "Yoga Studio",
+                    "target": 500000.00,
+                    "current": 120000.00,
+                    "priority": "high"
+                },
+                {
+                    "name": "Advanced Certification",
+                    "target": 80000.00,
+                    "current": 30000.00,
+                    "priority": "medium"
+                }
+            ],
+            "challenges": [
+                "Class cancellations",
+                "Platform commission fees",
+                "Marketing costs",
+                "Equipment and props",
+                "Seasonal student dropout"
+            ]
+        },
+        "typical_questions": [
+            "How much did I earn from private classes?",
+            "What's my average earning per class?",
+            "Am I on track with my studio savings?",
+            "How much did I spend on marketing?",
+            "Which platform has better student retention?"
+        ]
+    },
+    {
+        "persona_name": "Karthik - Food Delivery + Part-time Tutor",
+        "description": "Combines food delivery with evening tutoring to maximize income",
+        "profile": {
+            "user_id": "usr_karthik_007",
+            "phone": "+919876543216",
+            "name": "Karthik Iyer",
+            "age": 24,
+            "city": "Chennai",
+            "job": "Delivery Partner & Tutor",
+            "gig_platforms": [
+                "Swiggy",
+                "Zomato",
+                "Vedantu",
+                "Private Tutoring"
+            ],
+            "work_hours_per_day": 10,
+            "financial_summary": {
+                "current_balance": 22000.00,
+                "avg_monthly_income": 35000.00,
+                "monthly_expenses": 25000.00,
+                "income_volatility": "medium",
+                "emergency_fund": 30000.00,
+                "income_sources": {
+                    "Swiggy": 12000.00,
+                    "Zomato": 8000.00,
+                    "Vedantu": 10000.00,
+                    "Private Tutoring": 5000.00
+                }
+            },
+            "goals": [
+                {
+                    "name": "Higher Education",
+                    "target": 150000.00,
+                    "current": 45000.00,
+                    "priority": "high"
+                },
+                {
+                    "name": "Bike Purchase",
+                    "target": 60000.00,
+                    "current": 20000.00,
+                    "priority": "medium"
+                }
+            ],
+            "challenges": [
+                "Balancing two different jobs",
+                "Time management",
+                "Physical exhaustion",
+                "Irregular tutoring income",
+                "Fuel costs for deliveries"
+            ]
+        },
+        "typical_questions": [
+            "How much did I earn from deliveries vs tutoring?",
+            "What's my total income this month?",
+            "Am I saving enough for my education?",
+            "How can I optimize my time between jobs?",
+            "What's my fuel expense for deliveries?"
+        ]
+    }
+]
