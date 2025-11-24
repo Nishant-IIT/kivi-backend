@@ -167,49 +167,4 @@ async def get_current_user(
         )
 
 
-def create_refresh_token(user_id: str, phone: str) -> str:
-    """
-    Generate a refresh token with longer expiration (7 days).
-    
-    Args:
-        user_id: Unique user identifier
-        phone: User's phone number
-        
-    Returns:
-        JWT refresh token string
-        
-    Example:
-        refresh_token = create_refresh_token("usr_123", "+919876543210")
-    """
-    payload = {
-        "user_id": user_id,
-        "phone": phone,
-        "token_type": "refresh"
-    }
-    
-    # Refresh tokens expire in 7 days (168 hours)
-    token = encode_jwt(payload, expires_in_hours=168)
-    return token
 
-
-def verify_refresh_token(token: str) -> Dict[str, Any]:
-    """
-    Verify a refresh token and extract user information.
-    
-    Args:
-        token: Refresh token string
-        
-    Returns:
-        Decoded payload dictionary
-        
-    Raises:
-        InvalidTokenError: If token is not a refresh token or is invalid
-        TokenExpiredError: If token has expired
-    """
-    payload = verify_token(token)
-    
-    # Verify it's a refresh token
-    if payload.get("token_type") != "refresh":
-        raise InvalidTokenError("Not a valid refresh token")
-    
-    return payload

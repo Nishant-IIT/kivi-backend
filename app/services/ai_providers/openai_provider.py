@@ -80,32 +80,31 @@ def _get_mocked_response(prompt: str) -> str:
     
     if "spend" in prompt_lower or "expense" in prompt_lower:
         return (
-            f"[MOCKED OpenAI Response] Based on your recent transactions, "
-            f"you've spent approximately ₹5,200 this month. Your top categories "
-            f"are food (₹2,100) and transport (₹1,800). Would you like a detailed breakdown?"
+            f"I'd be happy to help you track your spending. However, I need access to your "
+            f"transaction data to provide accurate information. Please ensure your account is "
+            f"properly connected and synced."
         )
     elif "save" in prompt_lower or "saving" in prompt_lower:
         return (
-            f"[MOCKED OpenAI Response] Great question about savings! "
-            f"Based on your income pattern, I recommend setting aside ₹3,000-4,000 monthly. "
-            f"This will help you build an emergency fund of 3 months' expenses."
+            f"Great question about savings! To provide personalized savings recommendations, "
+            f"I need to analyze your income and expense patterns. Please make sure your financial "
+            f"data is up to date."
         )
     elif "income" in prompt_lower or "earn" in prompt_lower:
         return (
-            f"[MOCKED OpenAI Response] Your income this month from gig platforms is ₹28,500. "
-            f"Swiggy contributed ₹18,000 and Zomato ₹10,500. Your earnings are 12% higher than last month!"
+            f"I can help you track your income from various gig platforms. To see your earnings, "
+            f"please ensure your accounts are connected and your data is synced."
         )
     elif "budget" in prompt_lower:
         return (
-            f"[MOCKED OpenAI Response] You're doing well with your budgets! "
-            f"Food: 64% used (₹3,200/₹5,000), Transport: 93% used (₹2,800/₹3,000). "
-            f"Watch your transport spending - you're close to the limit."
+            f"I can help you manage your budgets! To provide specific budget insights, "
+            f"please make sure your spending categories and limits are configured."
         )
     else:
         return (
-            f"[MOCKED OpenAI Response] I understand you're asking about: '{prompt_excerpt}'. "
-            f"I'm here to help with your finances! You can ask me about spending, savings, "
-            f"income tracking, or budgets. What would you like to know?"
+            f"I'm KIVI, your financial assistant! I can help with spending analysis, savings goals, "
+            f"income tracking, and budget management. To get started, please ensure your financial "
+            f"accounts are connected."
         )
 
 

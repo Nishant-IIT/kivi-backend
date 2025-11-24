@@ -80,39 +80,36 @@ def _get_mocked_response(prompt: str) -> str:
     
     if "spend" in prompt_lower or "expense" in prompt_lower:
         return (
-            f"[MOCKED Anthropic Response] Looking at your transaction history, "
-            f"you've spent ₹5,200 this month. The breakdown shows: Food ₹2,100, "
-            f"Transport ₹1,800, and Shopping ₹1,300. Your spending is 8% lower than last month!"
+            f"I'd be happy to analyze your spending patterns. However, I need access to your "
+            f"transaction data to provide accurate insights. Please ensure your account is "
+            f"properly connected and synced."
         )
     elif "save" in prompt_lower or "saving" in prompt_lower:
         return (
-            f"[MOCKED Anthropic Response] Let's talk about savings! "
-            f"With your current income of ₹28,000/month, I suggest saving 15-20% (₹4,200-5,600). "
-            f"Start with an emergency fund covering 3 months of expenses. You're on the right track!"
+            f"Let's talk about savings! To provide personalized savings recommendations, "
+            f"I need to analyze your income and expense patterns. Please make sure your financial "
+            f"data is up to date."
         )
     elif "income" in prompt_lower or "earn" in prompt_lower:
         return (
-            f"[MOCKED Anthropic Response] Your gig income this month totals ₹28,500. "
-            f"Breakdown: Swiggy ₹18,000 (63%), Zomato ₹10,500 (37%). "
-            f"Tip: Your Swiggy earnings are strongest on weekends. Consider focusing there!"
+            f"I can help you track your income from various gig platforms. To see your earnings breakdown, "
+            f"please ensure your accounts are connected and your data is synced."
         )
     elif "budget" in prompt_lower:
         return (
-            f"[MOCKED Anthropic Response] Your budget status looks good! "
-            f"Food budget: ₹3,200 of ₹5,000 used (64%). Transport: ₹2,800 of ₹3,000 (93% - careful!). "
-            f"You have ₹1,800 remaining in food and ₹200 in transport for this month."
+            f"I can help you manage your budgets effectively! To provide specific budget insights, "
+            f"please make sure your spending categories and limits are configured."
         )
     elif "platform" in prompt_lower or "swiggy" in prompt_lower or "zomato" in prompt_lower:
         return (
-            f"[MOCKED Anthropic Response] Platform comparison: Swiggy is your top earner at ₹18,000/month. "
-            f"Zomato brings in ₹10,500. Based on your patterns, Swiggy orders peak during lunch (12-2pm) "
-            f"and dinner (7-10pm). Consider maximizing those hours!"
+            f"I can help you compare earnings across different gig platforms. To see your platform "
+            f"performance, please ensure your accounts are connected and synced."
         )
     else:
         return (
-            f"[MOCKED Anthropic Response] I see you're asking: '{prompt_excerpt}'. "
             f"I'm KIVI, your financial assistant! I can help you understand your spending patterns, "
-            f"track income from gig platforms, manage budgets, and plan savings. What would you like to explore?"
+            f"track income from gig platforms, manage budgets, and plan savings. To get started, "
+            f"please ensure your financial accounts are connected."
         )
 
 

@@ -37,7 +37,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"phone\": \"+919876543210\",\n  \"password\": \"demo123\"\n}"
+                            "raw": "{\n  \"phone\": \"+91XXXXXXXXXX\",\n  \"password\": \"your_password\"\n}"
                         },
                         "url": {
                             "raw": "{{base_url}}/api/v1/login",

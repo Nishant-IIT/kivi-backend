@@ -18,7 +18,6 @@
    ```bash
    # MongoDB
    MONGO_URI=mongodb://localhost:27017
-   USE_MOCK_DATA=true
 
    # JWT
    JWT_SECRET=your-secret-key-here
@@ -57,16 +56,6 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 python -m app.main
 ```
 
-## Verify Installation
-
-Run the structure test script:
-
-```bash
-python test_app_structure.py
-```
-
-This will verify that all modules are properly imported and list all available endpoints.
-
 ## Access the API
 
 Once the server is running:
@@ -78,22 +67,10 @@ Once the server is running:
 
 ## Quick Test
 
-Test the login endpoint:
+Test the health check endpoint:
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/login \
-  -H "Content-Type: application/json" \
-  -d '{"phone": "+919876543210", "password": "demo123"}'
-```
-
-Expected response:
-```json
-{
-  "access_token": "eyJhbGc...",
-  "token_type": "bearer",
-  "user_id": "usr_9876543210",
-  "phone": "+919876543210"
-}
+curl http://localhost:8000/health
 ```
 
 ## Available Endpoints
@@ -121,15 +98,7 @@ Expected response:
 - `POST /api/v1/ai/chat` - Chat with AI (mobile app)
 - `GET /api/v1/ai/health` - AI service health check
 
-## Mock Data Mode
 
-By default, the application runs with `USE_MOCK_DATA=true`, which means:
-- No MongoDB connection required
-- All data stored in memory
-- Perfect for development and testing
-- Data resets on server restart
-
-To use real MongoDB, set `USE_MOCK_DATA=false` in your `.env` file and ensure MongoDB is running.
 
 ## Troubleshooting
 
@@ -149,7 +118,7 @@ uvicorn app.main:app --reload --port 8001
 
 ### Database Connection Errors
 
-If MongoDB connection fails, the app will automatically fall back to mock data mode.
+Ensure MongoDB is running and the MONGO_URI in your .env file is correct.
 
 ## Next Steps
 

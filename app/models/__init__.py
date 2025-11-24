@@ -4,7 +4,7 @@ from app.models.user_model import (
     UserProfile,
     get_user_by_phone,
     upsert_user,
-    create_sample_user
+    create_empty_user
 )
 
 from app.models.transaction_model import (
@@ -23,7 +23,7 @@ __all__ = [
     "UserProfile",
     "get_user_by_phone",
     "upsert_user",
-    "create_sample_user",
+    "create_empty_user",
     "Transaction",
     "get_transactions",
     "create_transaction",

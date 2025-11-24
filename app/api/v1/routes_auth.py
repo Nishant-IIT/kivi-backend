@@ -59,7 +59,8 @@ from typing import Any
 import logging
 
 from app.core.security import create_token
-from app.models.user_model import get_user_by_phone, upsert_user, create_sample_user
+from app.core.response_models import success_response, error_response, ResponseCode
+from app.models.user_model import get_user_by_phone, upsert_user, create_empty_user
 from app.db.mongodb import get_db
 from app.services.aa_service import fetch_aa_data, normalize_aa_data
 from app.services.whatsapp_service import send_whatsapp_text
@@ -83,9 +84,9 @@ class LoginRequest(BaseModel):
     password: str = Field(..., description="User password", example="demo123")
 
 
-class LoginResponse(BaseModel):
+class LoginData(BaseModel):
     """
-    Login response schema.
+    Login response data schema.
     
     Attributes:
         access_token: JWT token for authentication
@@ -101,17 +102,13 @@ class LoginResponse(BaseModel):
 
 def validate_credentials(phone: str, password: str) -> bool:
     """
-    Mock credential validation for hackathon development.
+    Validate user credentials.
     
-    In production, this would:
+    TODO: Implement proper authentication:
     - Hash the password and compare with stored hash
     - Implement rate limiting for failed attempts
     - Add account lockout after multiple failures
     - Log authentication attempts
-    
-    For hackathon, accepts:
-    - Any phone number with password "demo123"
-    - Or phone ending in "0000" with any password
     
     Args:
         phone: User phone number
@@ -119,33 +116,24 @@ def validate_credentials(phone: str, password: str) -> bool:
     
     Returns:
         True if credentials are valid, False otherwise
-    
-    Example:
-        if validate_credentials("+919876543210", "demo123"):
-            print("Valid credentials")
     """
     logger.debug(f"Validating credentials for phone: {phone}")
     
-    # Mock validation logic for hackathon
-    # Accept "demo123" as universal password
-    if password == "demo123":
-        logger.info(f"Valid credentials for phone: {phone} (demo password)")
+    # Default password for all users: dummy@123
+    # TODO: Implement proper password validation with hashing
+    if password == "dummy@123":
+        logger.info(f"Valid credentials for phone: {phone}")
         return True
     
-    # Accept any password for phone numbers ending in 0000 (test accounts)
-    if phone.endswith("0000"):
-        logger.info(f"Valid credentials for phone: {phone} (test account)")
-        return True
-    
-    logger.warning(f"Invalid credentials for phone: {phone}")
+    logger.warning(f"Invalid password for phone: {phone}")
     return False
 
 
-@router.post("/login", response_model=LoginResponse, status_code=status.HTTP_200_OK)
+@router.post("/login", status_code=status.HTTP_200_OK)
 async def login(
     request: LoginRequest,
     db: Any = Depends(get_db)
-) -> LoginResponse:
+) -> dict:
     """
     Authenticate user and generate JWT token.
     
@@ -185,10 +173,11 @@ async def login(
         # Step 1: Validate credentials
         if not validate_credentials(request.phone, request.password):
             logger.warning(f"Failed login attempt for phone: {request.phone}")
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid credentials",
-                headers={"WWW-Authenticate": "Bearer"}
+            return error_response(
+                message="Invalid phone number or password",
+                code=ResponseCode.INVALID_CREDENTIALS,
+                error_type="AuthenticationError",
+                details="Please check your credentials and try again"
             )
         
         # Step 2: Get or create user profile
@@ -196,11 +185,11 @@ async def login(
         
         is_first_time_user = False
         if not user:
-            # First-time user: create profile with sample gig worker data
+            # First-time user: create minimal profile
             is_first_time_user = True
             logger.info(f"First-time login for {request.phone}, creating user profile")
-            sample_user = create_sample_user(request.phone)
-            user = await upsert_user(db, sample_user)
+            new_user = create_empty_user(request.phone)
+            user = await upsert_user(db, new_user)
             logger.info(f"Created new user profile: {user['user_id']}")
         else:
             logger.info(f"Existing user login: {user['user_id']}")
@@ -262,23 +251,25 @@ async def login(
         logger.info(f"Generated access token for user: {user_id}")
         
         # Step 5: Return response
-        return LoginResponse(
-            access_token=access_token,
-            token_type="bearer",
-            user_id=user_id,
-            phone=phone
+        return success_response(
+            data={
+                "access_token": access_token,
+                "token_type": "bearer",
+                "user_id": user_id,
+                "phone": phone
+            },
+            message="Login successful",
+            code=ResponseCode.SUCCESS
         )
-    
-    except HTTPException:
-        # Re-raise HTTP exceptions (like 401)
-        raise
     
     except Exception as e:
         # Log unexpected errors and return 500
         logger.error(f"Login error for phone {request.phone}: {e}", exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error during login"
+        return error_response(
+            message="An error occurred during login",
+            code=ResponseCode.INTERNAL_ERROR,
+            error_type="InternalError",
+            details=str(e) if logger.level == logging.DEBUG else None
         )
 
 
@@ -286,56 +277,21 @@ def _build_welcome_message(user: dict) -> str:
     """
     Build personalized welcome message for first-time users.
     
-    Creates a friendly, informative welcome message that introduces KIVI
-    and highlights key features relevant to gig workers. Includes user's
-    name and job if available.
-    
     Args:
         user: User profile dictionary
     
     Returns:
         Welcome message text
-    
-    Example:
-        message = _build_welcome_message(user)
-        # Returns: "Hi Rahul! 👋 Welcome to KIVI..."
     """
     name = user.get("name", "there")
-    job = user.get("job", "")
-    platforms = user.get("gig_platforms", [])
-    balance = user.get("financial_summary", {}).get("current_balance", 0)
     
-    # Build personalized greeting
-    greeting = f"Hi {name}! 👋"
-    
-    # Build welcome message with gig worker context
     message_parts = [
-        greeting,
+        f"Hi {name}! 👋",
         "",
         "Welcome to KIVI - your AI-powered financial companion! 🎉",
         "",
         "I'm here to help you manage your finances, track your earnings, and achieve your financial goals.",
-        ""
-    ]
-    
-    # Add job-specific context if available
-    if job:
-        message_parts.append(f"I see you're a {job}. I understand the challenges of managing irregular income and I'm here to help!")
-        message_parts.append("")
-    
-    # Add platform-specific context if available
-    if platforms:
-        platforms_str = ", ".join(platforms[:3])  # Show up to 3 platforms
-        message_parts.append(f"I've connected your accounts from {platforms_str} and I'm tracking your earnings.")
-        message_parts.append("")
-    
-    # Add balance info if available
-    if balance > 0:
-        message_parts.append(f"Your current balance: ₹{balance:,.2f}")
-        message_parts.append("")
-    
-    # Add feature highlights
-    message_parts.extend([
+        "",
         "Here's what I can help you with:",
         "💰 Track income from multiple sources",
         "📊 Analyze spending patterns",
@@ -343,12 +299,9 @@ def _build_welcome_message(user: dict) -> str:
         "💡 Get personalized financial insights",
         "⚠️ Receive smart alerts and nudges",
         "",
-        "Just send me a message anytime! You can ask things like:",
-        "• 'How much did I earn this week?'",
-        "• 'What's my spending on food?'",
-        "• 'Am I on track with my savings goal?'",
+        "Just send me a message anytime!",
         "",
         "Let's get started! 🚀"
-    ])
+    ]
     
     return "\n".join(message_parts)

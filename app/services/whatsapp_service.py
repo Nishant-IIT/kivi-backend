@@ -28,7 +28,7 @@ Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 8.2, 8.3, 8.4, 8.5
 
 import httpx
 from typing import Dict, Any, Optional
-from app.models.user_model import get_user_by_phone, create_sample_user, upsert_user
+from app.models.user_model import get_user_by_phone, create_empty_user, upsert_user
 from app.models.message_log_model import create_message_doc, save_message
 from app.services.ai_chat import chat_with_model
 from app.config.config import WHATSAPP_TOKEN, WHATSAPP_PHONE_NUMBER_ID, WHATSAPP_VERIFY_TOKEN
@@ -125,9 +125,9 @@ async def handle_incoming_webhook(db: Any, payload: Dict[str, Any]) -> None:
         user = await get_user_by_phone(db, phone)
         
         if not user:
-            webhook_logger.info(f"New user detected: {phone}. Creating sample profile.")
-            sample_user = create_sample_user(phone)
-            user = await upsert_user(db, sample_user)
+            webhook_logger.info(f"New user detected: {phone}. Creating profile.")
+            new_user = create_empty_user(phone)
+            user = await upsert_user(db, new_user)
             webhook_logger.info(f"Created user profile for {phone}")
         
         user_id = user.get("user_id", "")

@@ -58,7 +58,6 @@ KIVI is specifically designed for users in the gig economy who face unique finan
    ```bash
    # MongoDB
    MONGO_URI=mongodb://localhost:27017
-   USE_MOCK_DATA=true
 
    # JWT
    JWT_SECRET=your-secret-key-here
@@ -89,40 +88,15 @@ KIVI is specifically designed for users in the gig economy who face unique finan
 
 ### Quick Test
 
-Test the login endpoint:
+Test the health check endpoint:
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/login \
-  -H "Content-Type: application/json" \
-  -d '{"phone": "+919876543210", "password": "demo123"}'
-```
-
-Expected response:
-```json
-{
-  "access_token": "eyJhbGc...",
-  "token_type": "bearer",
-  "user_id": "usr_9876543210",
-  "phone": "+919876543210"
-}
+curl http://localhost:8000/health
 ```
 
 ## 📚 Sample API Usage
 
-### 1. Get User Profile
-
-```bash
-# First, login to get token
-TOKEN=$(curl -s -X POST http://localhost:8000/api/v1/login \
-  -H "Content-Type: application/json" \
-  -d '{"phone": "+919876543210", "password": "demo123"}' | jq -r '.access_token')
-
-# Get user profile
-curl -X GET http://localhost:8000/api/v1/users/me \
-  -H "Authorization: Bearer $TOKEN"
-```
-
-### 2. Parse SMS Transaction
+### 1. Parse SMS Transaction
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/transactions/sms \
@@ -133,7 +107,7 @@ curl -X POST http://localhost:8000/api/v1/transactions/sms \
   }'
 ```
 
-### 3. Chat with AI
+### 2. Chat with AI
 
 ```bash
 curl -X POST http://localhost:8000/api/v1/ai/chat \
@@ -147,7 +121,7 @@ curl -X POST http://localhost:8000/api/v1/ai/chat \
   }'
 ```
 
-### 4. Get Financial Dashboard
+### 3. Get Financial Dashboard
 
 ```bash
 curl -X GET http://localhost:8000/api/v1/dashboard \
@@ -217,25 +191,10 @@ kivi-backend/
 
 ## 🔧 Configuration
 
-### Mock Data vs MongoDB
+### MongoDB Configuration
 
-KIVI supports two data storage modes:
+KIVI uses MongoDB for persistent data storage:
 
-#### Mock Data Mode (Default)
-- **Use Case**: Development, testing, demos
-- **Configuration**: `USE_MOCK_DATA=true` in `.env`
-- **Benefits**:
-  - No MongoDB installation required
-  - Fast setup and testing
-  - Data stored in memory
-  - Perfect for hackathon demos
-- **Limitations**:
-  - Data resets on server restart
-  - Not suitable for production
-
-#### MongoDB Mode
-- **Use Case**: Production, persistent storage
-- **Configuration**: `USE_MOCK_DATA=false` in `.env`
 - **Requirements**:
   - MongoDB installed and running
   - Valid `MONGO_URI` in `.env`
@@ -248,8 +207,7 @@ KIVI supports two data storage modes:
 
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
-| `MONGO_URI` | MongoDB connection string | `mongodb://localhost:27017` | No (if using mock) |
-| `USE_MOCK_DATA` | Use in-memory mock data | `true` | No |
+| `MONGO_URI` | MongoDB connection string | `mongodb://localhost:27017` | Yes |
 | `JWT_SECRET` | Secret key for JWT signing | `dev-secret-key` | Yes |
 | `JWT_EXPIRATION_HOURS` | JWT token expiration | `24` | No |
 | `WHATSAPP_TOKEN` | Meta WhatsApp API token | `placeholder` | Yes (for WhatsApp) |
@@ -362,15 +320,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 4
 python -m uvicorn app.main:app --reload
 ```
 
-### Verify Installation
 
-Run the structure test script:
-
-```bash
-python test_app_structure.py
-```
-
-This will verify that all modules are properly imported and list all available endpoints.
 
 ## 📖 API Endpoints
 
@@ -406,12 +356,10 @@ For detailed API documentation with request/response schemas and curl examples, 
 Use the provided curl commands in the documentation:
 
 ```bash
-# Test authentication
-curl -X POST http://localhost:8000/api/v1/login \
-  -H "Content-Type: application/json" \
-  -d '{"phone": "+919876543210", "password": "demo123"}'
+# Test health check
+curl http://localhost:8000/health
 
-# Test SMS parsing
+# Test SMS parsing (requires authentication)
 curl -X POST http://localhost:8000/api/v1/transactions/sms \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
@@ -503,7 +451,7 @@ uvicorn app.main:app --reload --port 8001
 
 ### Database Connection Errors
 
-The app automatically falls back to mock data mode if MongoDB connection fails. Check your `MONGO_URI` and ensure MongoDB is running.
+Check your `MONGO_URI` in the .env file and ensure MongoDB is running.
 
 ### WhatsApp Webhook Not Receiving Messages
 
@@ -513,18 +461,17 @@ The app automatically falls back to mock data mode if MongoDB connection fails. 
 
 ### AI Provider Errors
 
-If AI providers are not configured (no API keys), the system returns mocked responses. This is normal for development.
+Ensure AI provider API keys (OPENAI_API_KEY or ANTHROPIC_API_KEY) are configured in your .env file.
 
 ## 🚀 Deployment
 
 ### Environment Setup
 
-1. Set `USE_MOCK_DATA=false` for production
-2. Configure production MongoDB URI
-3. Set strong `JWT_SECRET`
-4. Configure WhatsApp API credentials
-5. Add AI provider API keys
-6. Set `LOG_LEVEL=INFO` or `WARNING`
+1. Configure production MongoDB URI
+2. Set strong `JWT_SECRET`
+3. Configure WhatsApp API credentials
+4. Add AI provider API keys
+5. Set `LOG_LEVEL=INFO` or `WARNING`
 
 ### Production Considerations
 

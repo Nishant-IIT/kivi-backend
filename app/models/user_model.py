@@ -34,6 +34,28 @@ import logging
 logger = logging.getLogger("kivi.db")
 
 
+def serialize_mongo_doc(doc: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Convert MongoDB document to JSON-serializable dict.
+    
+    Converts ObjectId to string and handles nested documents.
+    
+    Args:
+        doc: MongoDB document
+    
+    Returns:
+        JSON-serializable dictionary
+    """
+    if doc is None:
+        return None
+    
+    # Convert _id ObjectId to string
+    if "_id" in doc:
+        doc["_id"] = str(doc["_id"])
+    
+    return doc
+
+
 class FinancialSummary(BaseModel):
     """Financial summary for gig worker profile."""
     current_balance: float = 0.0
@@ -116,6 +138,8 @@ async def get_user_by_phone(db: Any, phone: str) -> Optional[Dict[str, Any]]:
         user = await db.users.find_one({"phone": phone})
         
         if user:
+            # Convert MongoDB ObjectId to string for JSON serialization
+            user = serialize_mongo_doc(user)
             logger.info(f"Found user: {user.get('user_id', 'unknown')}")
         else:
             logger.debug(f"No user found with phone: {phone}")
@@ -188,106 +212,42 @@ async def upsert_user(db: Any, user_dict: Dict[str, Any]) -> Dict[str, Any]:
         raise
 
 
-def create_sample_user(phone: str) -> Dict[str, Any]:
+def create_empty_user(phone: str, name: str = "User") -> Dict[str, Any]:
     """
-    Create user with sample gig worker data for onboarding.
-    
-    Generates a delivery partner profile with:
-    - Multiple gig platforms (Swiggy, Zomato, Dunzo)
-    - Financial summary with income volatility
-    - Sample budgets for common categories
-    - Financial goals (emergency fund, bike EMI buffer)
-    - Notification preferences
+    Create minimal user profile for new users.
     
     Args:
         phone: User phone number
+        name: User's name (optional)
     
     Returns:
-        User document dict with sample data
-    
-    Example:
-        sample_user = create_sample_user("+919876543210")
-        user = await upsert_user(db, sample_user)
+        User document dict with minimal data
     """
-    logger.info(f"Creating sample gig worker user for phone: {phone}")
+    logger.info(f"Creating new user profile for phone: {phone}")
     
     # Generate user_id from phone (remove + and take last 10 digits)
     user_id = f"usr_{phone.replace('+', '').replace('-', '')[-10:]}"
     
     now = datetime.utcnow().isoformat() + "Z"
     
-    sample_user = {
+    user = {
         "user_id": user_id,
         "phone": phone,
-        "name": "Demo User",
+        "name": name,
         "email": None,
-        "job": "Delivery Partner",
-        "city": "Mumbai",
-        "gig_platforms": ["Swiggy", "Zomato", "Dunzo"],
+        "job": None,
+        "city": None,
+        "gig_platforms": [],
         "financial_summary": {
-            "current_balance": 12000.0,
-            "avg_monthly_income": 28000.0,
-            "monthly_expenses": 22000.0,
-            "income_volatility": "high",
-            "last_30_days_income": 31500.0,
-            "income_sources": {
-                "Swiggy": 18000.0,
-                "Zomato": 10500.0,
-                "Dunzo": 3000.0
-            }
+            "current_balance": 0.0,
+            "avg_monthly_income": 0.0,
+            "monthly_expenses": 0.0,
+            "income_volatility": "medium",
+            "last_30_days_income": 0.0,
+            "income_sources": {}
         },
-        "budgets": [
-            {
-                "category": "food",
-                "monthly_limit": 5000.0,
-                "current_spent": 3200.0,
-                "note": None
-            },
-            {
-                "category": "transport",
-                "monthly_limit": 3000.0,
-                "current_spent": 2800.0,
-                "note": "Bike fuel and maintenance"
-            },
-            {
-                "category": "bills",
-                "monthly_limit": 4000.0,
-                "current_spent": 3500.0,
-                "note": "Rent, electricity, mobile"
-            },
-            {
-                "category": "entertainment",
-                "monthly_limit": 2000.0,
-                "current_spent": 800.0,
-                "note": None
-            }
-        ],
-        "goals": [
-            {
-                "goal_id": f"goal_{user_id}_001",
-                "name": "Emergency Fund",
-                "target_amount": 30000.0,
-                "current_amount": 12000.0,
-                "deadline": "2025-06-30",
-                "priority": "high"
-            },
-            {
-                "goal_id": f"goal_{user_id}_002",
-                "name": "Bike EMI Buffer",
-                "target_amount": 15000.0,
-                "current_amount": 5000.0,
-                "deadline": "2025-03-31",
-                "priority": "medium"
-            },
-            {
-                "goal_id": f"goal_{user_id}_003",
-                "name": "Festival Savings",
-                "target_amount": 10000.0,
-                "current_amount": 2000.0,
-                "deadline": "2025-10-31",
-                "priority": "low"
-            }
-        ],
+        "budgets": [],
+        "goals": [],
         "notification_preferences": {
             "whatsapp_enabled": True,
             "budget_alerts": True,
@@ -299,7 +259,4 @@ def create_sample_user(phone: str) -> Dict[str, Any]:
         "updated_at": now
     }
     
-    logger.debug(f"Created sample user with {len(sample_user['gig_platforms'])} platforms, "
-                f"{len(sample_user['budgets'])} budgets, {len(sample_user['goals'])} goals")
-    
-    return sample_user
+    return user

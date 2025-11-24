@@ -79,6 +79,7 @@ from typing import Optional, List, Dict, Any
 import logging
 
 from app.core.security import get_current_user
+from app.core.response_models import success_response, error_response, ResponseCode
 from app.models.user_model import (
     UserProfile,
     get_user_by_phone,
@@ -126,11 +127,11 @@ class UserProfileUpdateRequest(BaseModel):
     notification_preferences: Optional[NotificationPreferences] = Field(None, description="Notification settings")
 
 
-@router.get("/users/me", response_model=UserProfile, status_code=status.HTTP_200_OK)
+@router.get("/users/me", status_code=status.HTTP_200_OK)
 async def get_user_profile(
     current_user: Dict[str, Any] = Depends(get_current_user),
     db: Any = Depends(get_db)
-) -> UserProfile:
+) -> dict:
     """
     Retrieve authenticated user's profile.
     
@@ -174,35 +175,39 @@ async def get_user_profile(
         
         if not user:
             logger.warning(f"User profile not found for user_id: {user_id}, phone: {phone}")
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="User profile not found"
+            return error_response(
+                message="User profile not found",
+                code=ResponseCode.NOT_FOUND,
+                error_type="NotFoundError",
+                details=f"No profile found for user {user_id}"
             )
         
         logger.info(f"Successfully retrieved profile for user: {user_id}")
         
-        # Return user profile (Pydantic will validate and serialize)
-        return UserProfile(**user)
-    
-    except HTTPException:
-        # Re-raise HTTP exceptions
-        raise
+        # Return user profile
+        return success_response(
+            data=user,
+            message="User profile retrieved successfully",
+            code=ResponseCode.SUCCESS
+        )
     
     except Exception as e:
         # Log unexpected errors and return 500
         logger.error(f"Error fetching profile for user {user_id}: {e}", exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error while fetching user profile"
+        return error_response(
+            message="Failed to retrieve user profile",
+            code=ResponseCode.DATABASE_ERROR,
+            error_type="DatabaseError",
+            details=str(e) if logger.level == logging.DEBUG else None
         )
 
 
-@router.put("/users/me", response_model=UserProfile, status_code=status.HTTP_200_OK)
+@router.put("/users/me", status_code=status.HTTP_200_OK)
 async def update_user_profile(
     update_data: UserProfileUpdateRequest,
     current_user: Dict[str, Any] = Depends(get_current_user),
     db: Any = Depends(get_db)
-) -> UserProfile:
+) -> dict:
     """
     Update authenticated user's profile.
     
@@ -255,9 +260,11 @@ async def update_user_profile(
         
         if not existing_user:
             logger.warning(f"User profile not found for user_id: {user_id}, phone: {phone}")
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="User profile not found"
+            return error_response(
+                message="User profile not found",
+                code=ResponseCode.NOT_FOUND,
+                error_type="NotFoundError",
+                details=f"No profile found for user {user_id}"
             )
         
         # Step 2: Build update dictionary with only provided fields
@@ -296,16 +303,18 @@ async def update_user_profile(
         logger.info(f"Successfully updated profile for user: {user_id}")
         
         # Return updated user profile
-        return UserProfile(**updated_user)
-    
-    except HTTPException:
-        # Re-raise HTTP exceptions
-        raise
+        return success_response(
+            data=updated_user,
+            message="User profile updated successfully",
+            code=ResponseCode.UPDATED
+        )
     
     except Exception as e:
         # Log unexpected errors and return 500
         logger.error(f"Error updating profile for user {user_id}: {e}", exc_info=True)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Internal server error while updating user profile"
+        return error_response(
+            message="Failed to update user profile",
+            code=ResponseCode.DATABASE_ERROR,
+            error_type="DatabaseError",
+            details=str(e) if logger.level == logging.DEBUG else None
         )

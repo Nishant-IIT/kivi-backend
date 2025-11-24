@@ -92,7 +92,7 @@ async def lifespan(app: FastAPI):
         logger.info("Database connection established")
     except Exception as e:
         logger.error(f"Failed to connect to database: {e}", exc_info=True)
-        logger.warning("Continuing with mock data")
+        raise
     
     logger.info("KIVI Backend ready to accept requests")
     logger.info("=" * 60)
@@ -154,6 +154,10 @@ app.include_router(routes_whatsapp.router)
 app.include_router(routes_ai.router)
 
 
+# Import response models
+from app.core.response_models import success_response, error_response, ResponseCode
+
+
 # Root endpoint
 @app.get("/", status_code=status.HTTP_200_OK)
 async def root() -> dict:
@@ -164,39 +168,30 @@ async def root() -> dict:
     project name, description, version, and reference to project brief.
     
     Returns:
-        dict: API information
-    
-    Example:
-        GET /
-        
-        Response:
-        {
+        dict: Standardized API information response
+    """
+    return success_response(
+        data={
             "project": "KIVI Backend",
             "description": "AI-powered financial management for gig workers",
             "version": "1.0.0",
             "status": "running",
             "docs": "/docs",
-            "project_brief": "/mnt/data/MumbaiHacks 2025.pdf"
-        }
-    """
-    return {
-        "project": "KIVI Backend",
-        "description": "AI-powered financial management for gig workers",
-        "version": "1.0.0",
-        "status": "running",
-        "docs": "/docs",
-        "redoc": "/redoc",
-        "project_brief": "/mnt/data/MumbaiHacks 2025.pdf",
-        "features": [
-            "WhatsApp integration",
-            "AI chat (OpenAI, Anthropic)",
-            "SMS transaction parsing",
-            "Financial dashboard and reports",
-            "User profile management",
-            "Proactive notifications"
-        ],
-        "target_audience": "Gig workers with uncertain income streams"
-    }
+            "redoc": "/redoc",
+            "project_brief": "/mnt/data/MumbaiHacks 2025.pdf",
+            "features": [
+                "WhatsApp integration",
+                "AI chat (OpenAI, Anthropic)",
+                "SMS transaction parsing",
+                "Financial dashboard and reports",
+                "User profile management",
+                "Proactive notifications"
+            ],
+            "target_audience": "Gig workers with uncertain income streams"
+        },
+        message="KIVI Backend API is running",
+        code=ResponseCode.SUCCESS
+    )
 
 
 # Health check endpoint
@@ -208,21 +203,17 @@ async def health_check() -> dict:
     Returns service health status for monitoring and load balancers.
     
     Returns:
-        dict: Health status
-    
-    Example:
-        GET /health
-        
-        Response:
-        {
-            "status": "healthy",
-            "service": "kivi-backend"
-        }
+        dict: Standardized health status response
     """
-    return {
-        "status": "healthy",
-        "service": "kivi-backend"
-    }
+    return success_response(
+        data={
+            "status": "healthy",
+            "service": "kivi-backend",
+            "timestamp": "2025-11-24T15:06:21Z"
+        },
+        message="Service is healthy",
+        code=ResponseCode.SUCCESS
+    )
 
 
 # Global exception handler for KIVI custom exceptions
@@ -249,9 +240,25 @@ async def kivi_exception_handler(request: Request, exc: KiviException) -> JSONRe
     # Convert to HTTP exception
     http_exc = kivi_exception_to_http(exc)
     
+    # Map HTTP status to response code
+    code_map = {
+        400: ResponseCode.BAD_REQUEST,
+        401: ResponseCode.UNAUTHORIZED,
+        403: ResponseCode.FORBIDDEN,
+        404: ResponseCode.NOT_FOUND,
+        409: ResponseCode.CONFLICT,
+        500: ResponseCode.INTERNAL_ERROR
+    }
+    
+    response_code = code_map.get(http_exc.status_code, ResponseCode.INTERNAL_ERROR)
+    
     return JSONResponse(
         status_code=http_exc.status_code,
-        content={"detail": http_exc.detail}
+        content=error_response(
+            message=http_exc.detail,
+            code=response_code,
+            error_type=exc.__class__.__name__
+        )
     )
 
 
@@ -278,10 +285,12 @@ async def global_exception_handler(request: Request, exc: Exception) -> JSONResp
     
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={
-            "detail": "Internal server error",
-            "error_type": type(exc).__name__
-        }
+        content=error_response(
+            message="An unexpected error occurred",
+            code=ResponseCode.INTERNAL_ERROR,
+            error_type=type(exc).__name__,
+            details=str(exc) if logger.level == 10 else None  # DEBUG level
+        )
     )
 
 

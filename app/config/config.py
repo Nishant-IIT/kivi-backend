@@ -29,7 +29,6 @@ load_dotenv()
 
 # MongoDB Configuration
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-USE_MOCK_DATA = os.getenv("USE_MOCK_DATA", "true").lower() == "true"
 
 # JWT Configuration
 JWT_SECRET = os.getenv("JWT_SECRET", "dev-secret-key")

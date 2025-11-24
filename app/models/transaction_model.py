@@ -118,8 +118,14 @@ async def get_transactions(
         if category:
             query["category"] = category
         
-        # Execute query
-        transactions = await db.transactions.find(query)
+        # Execute query and convert cursor to list
+        cursor = db.transactions.find(query)
+        transactions = await cursor.to_list(length=None)
+        
+        # Convert MongoDB ObjectId to string for JSON serialization
+        for txn in transactions:
+            if "_id" in txn:
+                txn["_id"] = str(txn["_id"])
         
         # Sort by timestamp (newest first)
         transactions_sorted = sorted(
@@ -192,6 +198,10 @@ async def create_transaction(db: Any, txn: Dict[str, Any]) -> Dict[str, Any]:
         
         # Insert transaction
         result = await db.transactions.insert_one(txn)
+        
+        # Convert MongoDB ObjectId to string for JSON serialization
+        if "_id" in txn:
+            txn["_id"] = str(txn["_id"])
         
         logger.info(f"Created transaction {txn['transaction_id']} for user {txn['user_id']}")
         
